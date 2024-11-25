@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+.navbar-button{
+    background-color: transparent;
+    border-style: none;
+    text-align: center;
+    display: inline-block;
+    width: 139px;
+    height: 40px;
+    transform: skew(-35deg);
+    padding: 0;
+}
+.navbar-button p{
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 15px;
+    margin: 0;
+    letter-spacing: 2.5px;
+    transform: skew(35deg);
+}
+.navbar-button:not(.active):hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+.navbar-button.active {
+    opacity: 1;
+    background-color: #B846FF;
+}

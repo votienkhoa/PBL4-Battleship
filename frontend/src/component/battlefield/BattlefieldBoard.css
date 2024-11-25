@@ -1,0 +1,35 @@
+.battlefield{
+    display: inline-grid;
+    border-bottom: 1px solid #db73ff;
+    border-left: 1px solid #db73ff;
+}
+.battlefield-row{
+    display: flex;
+}
+.battlefield-cell{
+    background-color: white;
+    border-top: 1px solid #db73ff;
+    border-right: 1px solid #db73ff;
+    text-align: center;
+    height: 50px;
+    width: 50px;
+}
+/*-------------------------*/
+
+.layout {
+    background: transparent;
+    z-index: 2;
+}
+.react-grid-item {
+    border: 1px solid green;
+}
+.react-grid-placeholder{
+    transition: all 200ms ease;
+}
+.ship {
+    background-color: transparent;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+    box-shadow:0 0 0 1px green inset;
+}
