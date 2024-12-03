@@ -6,7 +6,7 @@ import "./css/Navbar.css";
 function Navbar() {
     return (
         <nav className="navbar">
-            <NavLink to="/">
+            <NavLink to="/home">
                 {({isActive}) => (
                     <NavButton name="HOME" isActive={isActive}/>
                 )}

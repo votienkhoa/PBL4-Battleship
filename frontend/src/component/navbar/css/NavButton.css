@@ -27,3 +27,10 @@
     opacity: 1;
     background-color: #B846FF;
 }
+.notnav:hover{
+    filter: brightness(0.9);
+    cursor: pointer;
+}
+.notnav:active{
+    filter: brightness(0.8);
+}
