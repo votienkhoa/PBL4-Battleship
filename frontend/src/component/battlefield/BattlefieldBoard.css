@@ -11,8 +11,8 @@
     border-top: 1px solid #db73ff;
     border-right: 1px solid #db73ff;
     text-align: center;
-    height: 50px;
-    width: 50px;
+    height: 32px;
+    width: 32px;
 }
 /*-------------------------*/
 
@@ -21,15 +21,8 @@
     z-index: 2;
 }
 .react-grid-item {
-    border: 1px solid green;
+    border: 1px solid forestgreen;
 }
 .react-grid-placeholder{
     transition: all 200ms ease;
-}
-.ship {
-    background-color: transparent;
-    color: black;
-    text-align: center;
-    font-weight: bold;
-    box-shadow:0 0 0 1px green inset;
 }

@@ -7,7 +7,10 @@ import MessageList from "./component/chatbox/MessageList.jsx";
 import ChatBox from "./component/chatbox/ChatBox.jsx";
 import Register from "./component/login/Register.jsx";
 import {Navigate, Route, Routes} from "react-router-dom";
+import {SocketProvider} from './context/SocketContext.jsx';
 import Login from "./component/login/Login.jsx";
+import Lobby from "./component/lobby/Lobby.jsx";
+import Game from "./pages/Game.jsx";
 
 function App() {
     const fade = useSpring({
@@ -17,20 +20,22 @@ function App() {
     });
 
     return (
-        <animated.div style={fade}>
-            {/*<HomePage/>*/}
-            <Routes>
-                <Route path="/" element={<Navigate to="/home" replace />} />
-                <Route path="/register" element={<Register />}/>
-                <Route path="/about" element={<HomePage/>}/>
-                <Route path="/support" element={<HomePage/>}/>
-                <Route path="/more" element={<HomePage/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/play" element={<Battlefield/>}/>
-                <Route path="/home" element={<HomePage/>}/>
-                <Route path="/chat" element={<ChatBox/>}/>
-            </Routes>
-        </animated.div>
+        <SocketProvider>
+            <animated.div style={fade}>
+                <Routes>
+                    <Route path="/" element={<Navigate to="/lobby" replace/>}/>
+                    <Route path="/register" element={<Register/>}/>
+                    <Route path="/about" element={<HomePage/>}/>
+                    <Route path="/support" element={<HomePage/>}/>
+                    <Route path="/more" element={<HomePage/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/home" element={<HomePage/>}/>
+                    <Route path="/chat" element={<ChatBox/>}/>
+                    <Route path="/lobby" element={<Lobby/>}/>
+                    <Route path="/game" element={<Game/>}/>
+                </Routes>
+            </animated.div>
+        </SocketProvider>
     )
 }
 

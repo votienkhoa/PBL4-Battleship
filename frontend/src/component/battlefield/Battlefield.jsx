@@ -1,10 +1,11 @@
 import BattlefieldDnd from "./BattlefieldDnd.jsx";
 import BattlefieldBoard from "./BattlefieldBoard.jsx";
 
-function Battlefield() {
+// eslint-disable-next-line react/prop-types
+function Battlefield({isReady}) {
     return (
         <>
-            <BattlefieldDnd/>
+            <BattlefieldDnd isReady={isReady}/>
             <BattlefieldBoard/>
         </>
     );

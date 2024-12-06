@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, {useState} from 'react';
+import {useSocket} from '../../context/SocketContext.jsx'
 import PropTypes from "prop-types";
 
 function BattlefieldCell(props) {
