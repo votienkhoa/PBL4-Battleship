@@ -1,8 +1,9 @@
-const readySocket = (io, socket, layouts) => {
+const readySocket = (io, socket, layouts, turns) => {
     socket.on('position', (position) => {
         const roomID = Array.from(socket.rooms);
         if (!Array.isArray(layouts[roomID[1]])) {
             layouts[roomID[1]] = [];
+            turns[roomID[1]] = socket.id;
         }
         layouts[roomID[1]].push({id: socket.id, position: position});
         if (layouts[roomID[1]].length === 2) {

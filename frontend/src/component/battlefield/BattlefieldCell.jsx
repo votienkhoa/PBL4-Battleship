@@ -1,10 +1,22 @@
 import {useSocket} from '../../context/SocketContext.jsx'
 import PropTypes from "prop-types";
+const hit = {
+    backgroundColor: 'red'
+}
+const miss = {
+    backgroundColor: 'blue'
+}
+const cellStyle = (stat) => {
+    if (stat === 'miss') return miss;
+    else if (stat === 'hit') return hit;
+    else return null;
+}
 
 function BattlefieldCell(props) {
     return (
-        <div className={`battlefield-cell ${props.posX} ${props.posY}`} onClick={props.onCellClick}>
-            <p>{props.value}</p>
+        // eslint-disable-next-line react/prop-types
+        <div className={`battlefield-cell ${props.posX} ${props.posY}`} onClick={props.onCellClick} style={cellStyle(props.value)}>
+
         </div>
     );
 }
