@@ -9,7 +9,7 @@ import Register from "./component/login/Register.jsx";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {SocketProvider} from './context/SocketContext.jsx';
 import Login from "./component/login/Login.jsx";
-import Lobby from "./component/lobby/Lobby.jsx";
+import Lobby from "./pages/Lobby.jsx";
 import Game from "./pages/Game.jsx";
 
 function App() {

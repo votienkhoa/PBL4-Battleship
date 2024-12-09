@@ -1,11 +1,13 @@
 import {useSocket} from '../../context/SocketContext.jsx'
 import BattlefieldCell from "./BattlefieldCell.jsx";
 import './BattlefieldBoard.css';
+// eslint-disable-next-line react/prop-types
 function BattlefieldBoard({board = Array(10).fill(Array(10).fill(null))}) {
 
     const socket = useSocket();
     const handleClick = (i,j) => {
-        socket.emit('shoot',{i,j});
+        if (board[i][j] !== null) return;
+        socket.emit('shoot',{j,i});
     };
     //----------------------------------------------------------------
     return (
@@ -15,7 +17,7 @@ function BattlefieldBoard({board = Array(10).fill(Array(10).fill(null))}) {
                     <div key={rowIndex} className={`battlefield-row ${rowIndex}`}>
                         {row.map((col, colIndex) => (
                             <BattlefieldCell
-                                key={colIndex}
+                                key={`${rowIndex}-${colIndex}`}
                                 posX={rowIndex}
                                 posY={colIndex}
                                 value={board[rowIndex][colIndex]}

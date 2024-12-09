@@ -1,8 +1,5 @@
-import Battlefield from "../component/battlefield/Battlefield.jsx";
-import BattlefieldBoard from "../component/battlefield/BattlefieldBoard.jsx";
 import {useEffect, useState} from "react";
 import {useSocket} from "../context/SocketContext.jsx"
-import styled from "@emotion/styled";
 import Ready from "./Ready.jsx";
 import Play from "./Play.jsx";
 
@@ -10,23 +7,24 @@ function Game() {
     const socket = useSocket();
     useEffect(() => {
         if (!socket) return;
-        socket.on("room status", (status) => {
-            setStatus(status);
-        });
         socket.on("game start", () => {
             setStart(true);
         });
+        socket.on("roomID", (ID) => {
+            setRoomID(ID);
+        })
         return () => {
             socket.off("room status");
             socket.off("game start");
         }
     }, [socket]);
-
-    const [status, setStatus] = useState("");
     const [isStart, setStart] = useState(false);
+    const [roomID, setRoomID] = useState("")
+
+    socket.emit('roomID');
     return (
         <>
-            <h1>{status}</h1>
+            <h2>Room ID: {roomID}</h2>
             {isStart ? (<Play/>) : (<Ready/>)}
         </>
     );

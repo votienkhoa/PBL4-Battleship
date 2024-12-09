@@ -6,6 +6,7 @@ const readySocket = (io, socket, layouts, turns) => {
             turns[roomID[1]] = socket.id;
         }
         layouts[roomID[1]].push({id: socket.id, position: position});
+        socket.to(roomID).emit('enemy ready');
         if (layouts[roomID[1]].length === 2) {
             io.to(roomID[1]).emit('game start');
         }

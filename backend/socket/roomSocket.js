@@ -1,10 +1,10 @@
 const roomSocket = (io, socket, rooms) => {
+    let ID;
     socket.on('create room', () => {
-        const roomID = Math.floor(100000 + Math.random() * 900000).toString();
-        rooms[roomID] = [socket.id];
-        socket.join(roomID);
-        socket.emit('room created', roomID);
-        io.to(roomID).emit("room status", roomID);
+        ID = Math.floor(100000 + Math.random() * 900000).toString();
+        rooms[ID] = [socket.id];
+        socket.join(ID);
+        socket.emit('room created', ID);
     })
     socket.on("join room", (ID) => {
         const currentRoom = rooms[ID];
@@ -16,12 +16,14 @@ const roomSocket = (io, socket, rooms) => {
             socket.emit('error', "Room full!");
             return;
         }
-
         currentRoom.push(socket.id);
         socket.join(ID);
         socket.emit('room joined');
         io.to(ID).emit("room status", "xeeps tauf di dcm");
         console.log(rooms);
+    })
+    socket.on('roomID', () => {
+        socket.emit('roomID', Array.from(socket.rooms)[1])
     })
 }
 export default roomSocket;

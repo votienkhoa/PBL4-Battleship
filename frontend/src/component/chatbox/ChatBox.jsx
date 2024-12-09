@@ -9,7 +9,7 @@ const ContainerStyled = styled.div`
     padding: 8px;
     width: 400px;
     height: 250px;
-    border: 2px solid palevioletred;
+    border: 2px solid rgb(170, 11, 214);
     border-radius: 5px;
 `;
 const FormStyled = styled.div`

@@ -9,7 +9,6 @@ const Ship = styled.div`
     box-shadow:0 0 0 1px rgb(170, 11, 214) inset;
     background-color: rgba(184, 70, 255,0.1);
 `
-
 function BattlefieldDnd({isReady}) {
     const socket = useSocket();
     const [layout, setLayout] = useState([

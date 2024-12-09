@@ -1,12 +1,19 @@
 const playSocket = (io, socket, rooms, layouts, turns) => {
+    socket.on('turn',() => {
+        const roomID = Array.from(socket.rooms)[1];
+        if (socket.id !== turns[roomID]) socket.emit('turn', false);
+        else socket.emit('turn', true);
+    })
     socket.on('shoot',(position) => {
         console.log(turns);
         //--------------
         const roomID = Array.from(socket.rooms)[1];
+
         if (socket.id !== turns[roomID]) {
-            socket.emit('error', 'Not ur turn');
+            socket.emit('turn', false);
             return;
         }
+        else socket.emit('turn', true);
         const enemyLayout = layouts[roomID].filter(player => player.id!== socket.id)[0].position;
         const enemyID = () => {
             if (rooms[roomID][0] === socket.id) return rooms[roomID][1];
@@ -17,10 +24,10 @@ const playSocket = (io, socket, rooms, layouts, turns) => {
 
         let hit = false;
         enemyLayout.forEach((ship) => {
-            if (position.i >= ship.x &&
-                position.i <= ship.x + ship.w -1 &&
-                position.j >= ship.y &&
-                position.j <= ship.y + ship.h -1
+            if (position.j >= ship.x &&
+                position.j <= ship.x + ship.w -1 &&
+                position.i >= ship.y &&
+                position.i <= ship.y + ship.h -1
             ){
                 socket.to(roomID).emit('self', {position: position, status: "hit", type: "self"});
                 socket.emit('enemy', {position: position, status: "hit", type: "enemy"});

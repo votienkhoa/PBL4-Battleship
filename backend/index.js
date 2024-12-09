@@ -9,6 +9,7 @@ import chatSocket from "./socket/chatSocket.js";
 import roomSocket from "./socket/roomSocket.js";
 import readySocket from "./socket/readySocket.js";
 import playSocket from "./socket/playSocket.js";
+import disconnectSocket from "./socket/disconnectSocket.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -63,10 +64,7 @@ io.on("connection", (socket) => {
     chatSocket(io,socket);
     readySocket(io,socket, layouts, turns);
     playSocket(io,socket, rooms, layouts, turns);
-
-    socket.on('disconnect', () => {
-        console.log(`User disconnected: ${socket.id}`);
-    });
+    disconnectSocket(io, socket, rooms, layouts, turns);
 })
 
 server.listen(3000, () => {
