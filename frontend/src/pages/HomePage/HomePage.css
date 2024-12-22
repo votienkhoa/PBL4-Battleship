@@ -24,7 +24,7 @@
     font-size: 8vh;
     font-weight: normal;
     letter-spacing: 10px;
-    text-shadow: 0px 4px 20px #B846FF;
+    text-shadow: 0 4px 20px #B846FF;
 }
 .homepage-description p{
     color: white;
@@ -33,5 +33,5 @@
     font-weight: 300;
     font-size: 2.4vh;
     letter-spacing: 1.5px;
-    text-shadow: 0px 4px 8px #B846FF;
+    text-shadow: 0 4px 8px #B846FF;
 }

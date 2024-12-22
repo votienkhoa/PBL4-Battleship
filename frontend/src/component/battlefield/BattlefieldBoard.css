@@ -2,14 +2,18 @@
     display: inline-grid;
     border-bottom: 1px solid #db73ff;
     border-left: 1px solid #db73ff;
+    /*border: 1px solid rgb(170, 11, 214);*/
+    border-radius: 7px;
+    outline: 3px solid rgb(170, 11, 214);
+    box-shadow: 0 0 25px 5px rgba(251,28,122,0.5);
 }
 .battlefield-row{
     display: flex;
 }
 .battlefield-cell{
     background-color: white;
-    border-top: 1px solid #db73ff;
-    border-right: 1px solid #db73ff;
+    border-top: 1px solid rgba(219, 115, 255);
+    border-right: 1px solid rgba(219, 115, 255);
     text-align: center;
     height: 32px;
     width: 32px;
@@ -17,6 +21,7 @@
 /*-------------------------*/
 
 .layout {
+    position: relative;
     background: transparent;
     z-index: 2;
 }

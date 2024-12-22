@@ -32,6 +32,13 @@ function InputForm({onSend}) {
                 multiline={true}
                 maxRows={4}
                 onChange={(e) => setMessage(e.target.value)}
+                color = "primary"
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                        color: 'lightgrey'
+                    },
+                }}
             />
             <SendIcon fontSize="medium" onClick={() => handleSend()} sx={sendStyled}/>
         </Container>

@@ -7,7 +7,7 @@ import './BattlefieldBoard.css'
 const Ship = styled.div`
     border: 1.5px solid rgb(170, 11, 214);
     box-shadow:0 0 0 1px rgb(170, 11, 214) inset;
-    background-color: rgba(184, 70, 255,0.1);
+    background-color: rgba(244, 227, 255,0.65);
 `
 function BattlefieldDnd({isReady}) {
     const socket = useSocket();

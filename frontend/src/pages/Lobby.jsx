@@ -2,7 +2,20 @@ import {useEffect, useState} from 'react';
 import { useSocket } from '../context/SocketContext.jsx';
 import {useNavigate} from "react-router-dom";
 import styled from "@emotion/styled";
+import backgroundImage from "../assets/homepage-background.jpeg"
 
+const Wrapper = styled.div`
+    background-image: url(${backgroundImage});
+    background-size: cover;
+    height: 100vh;
+    margin: 0;
+`;
+const BlurBackground = styled.div`
+    backdrop-filter: blur(6px);
+    height: 100%;
+    width: 100%;
+    margin: 0;
+`
 const Heading = styled.h1`
     font-size: 2rem;
     color: red;
@@ -14,13 +27,16 @@ const Button = styled.button`
     padding: 0.5rem 1rem;
     font-size: 1rem;
     color: white;
-    background-color: #007bff;
+    background-color: #B846FF;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 1rem;
     &:hover {
-        background-color: #0056b3;
+        filter: brightness(0.8);
+    }
+    &:active {
+        filter: brightness(0.7);
     }
 `;
 const Input = styled.input`
@@ -35,14 +51,12 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 2rem;
 `;
 
 function Lobby() {
     const navigate = useNavigate();
     const socket = useSocket();
     const [roomID, setRoomID] = useState("");
-    const [error, setError] = useState("");
 
     useEffect(() => {
         if (!socket) return;
@@ -70,16 +84,20 @@ function Lobby() {
         socket.emit("join room", ID);
     }
     return (
-        <Container>
-            <Heading>{error}</Heading>
-            <Button onClick={createRoom}>Create Room</Button>
-            <Input
-                type="text"
-                placeholder="Enter Room ID"
-                onChange={(e) => setRoomID(e.target.value)}
-            />
-            <Button onClick={() => joinRoom(roomID)}>Join Room</Button>
-        </Container>
+        <Wrapper>
+            <BlurBackground>
+                <Container>
+                    <Button style={{marginTop: '200px'}} onClick={createRoom}>Create Room</Button>
+                    <Input
+                        type="text"
+                        placeholder="Enter Room ID"
+                        onChange={(e) => setRoomID(e.target.value)}
+                    />
+                    <Button onClick={() => joinRoom(roomID)}>Join Room</Button>
+                </Container>
+            </BlurBackground>
+        </Wrapper>
+
     );
 }
 

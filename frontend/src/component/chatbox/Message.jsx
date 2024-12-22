@@ -1,5 +1,6 @@
 import {Avatar, Typography} from "@mui/material";
 import styled from '@emotion/styled';
+import "@fontsource/montserrat/300.css"
 
 // eslint-disable-next-line react/prop-types
 function Message({text, displayName, createdAt, photoURL}) {
@@ -7,21 +8,26 @@ function Message({text, displayName, createdAt, photoURL}) {
         marginLeft: '10px',
         fontSize: '14px',
         fontWeight: 'bold',
-        color: 'black',
+        color: 'lightgrey',
+        fontFamily: 'Montserrat,serif'
     }
     const textStyled = {
+        color: 'lightgrey',
         marginLeft: '10px',
+        marginTop: '3px',
         fontSize: '16px',
-        color: 'black',
+        fontFamily: 'Montserrat,serif'
     }
     const timeStyled = {
+        marginTop: '4px',
         marginLeft: '10px',
-        fontSize: '12px',
+        fontSize: '10px',
         color: 'gray',
     }
     const Container = styled.div`
         margin-left: 10px;
         margin-bottom: 10px;
+        font-family: Montserrat,serif;
     `;
 
 

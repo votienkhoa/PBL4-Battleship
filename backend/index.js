@@ -57,13 +57,14 @@ app.post('/register', (req,res) => {
 const rooms = {};
 const layouts = {};
 const turns = {};
+const count = {};
 io.on("connection", (socket) => {
     console.log(`User connected: ${socket.id}`);
 
     roomSocket(io,socket,rooms);
     chatSocket(io,socket);
-    readySocket(io,socket, layouts, turns);
-    playSocket(io,socket, rooms, layouts, turns);
+    readySocket(io,socket, layouts, turns, count);
+    playSocket(io,socket, rooms, layouts, turns, count);
     disconnectSocket(io, socket, rooms, layouts, turns);
 })
 

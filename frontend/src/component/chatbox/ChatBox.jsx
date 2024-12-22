@@ -9,8 +9,9 @@ const ContainerStyled = styled.div`
     padding: 8px;
     width: 400px;
     height: 250px;
-    border: 2px solid rgb(170, 11, 214);
-    border-radius: 5px;
+    border: 2px solid rgba(170, 11, 214, 0.8);
+    border-radius: 10px;
+    background-color: rgba(0,0,0, 0.2);
 `;
 const FormStyled = styled.div`
     height: 100%;
@@ -23,8 +24,8 @@ const FormStyled = styled.div`
 function ChatBox() {
     const socket = useSocket();
     const [messages, setMessages] = useState([
-        { id: 1, displayName: "Dung", createdAt: "1:30pm", text: "cccc" },
-        { id: 2, displayName: "Khoa", createdAt: "1:28pm", text: "cc" }
+        { id: 1, displayName: "Dung", createdAt: "1:30pm", text: "hi" },
+        { id: 2, displayName: "Khoa", createdAt: "1:28pm", text: "hello" }
     ])
     //--------------------------------------
     useEffect(() => {
