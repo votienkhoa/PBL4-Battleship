@@ -1,9 +1,6 @@
 import HomePage from "./pages/HomePage/HomePage.jsx";
 import {animated, useSpring} from "@react-spring/web";
 import "./App.css"
-import Battlefield from "./component/battlefield/Battlefield.jsx";
-import Message from "./component/chatbox/Message.jsx";
-import MessageList from "./component/chatbox/MessageList.jsx";
 import ChatBox from "./component/chatbox/ChatBox.jsx";
 import Register from "./component/login/Register.jsx";
 import {Navigate, Route, Routes} from "react-router-dom";
@@ -11,6 +8,7 @@ import {SocketProvider} from './context/SocketContext.jsx';
 import Login from "./component/login/Login.jsx";
 import Lobby from "./pages/Lobby.jsx";
 import Game from "./pages/Game.jsx";
+import LoginModal from "./component/login/LoginModal.jsx";
 
 function App() {
     const fade = useSpring({

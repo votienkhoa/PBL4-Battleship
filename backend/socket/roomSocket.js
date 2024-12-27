@@ -19,11 +19,16 @@ const roomSocket = (io, socket, rooms) => {
         currentRoom.push(socket.id);
         socket.join(ID);
         socket.emit('room joined');
+        socket.to(ID).emit('enemy joined');
         io.to(ID).emit("room status", "xeeps tauf di dcm");
         console.log(rooms);
     })
     socket.on('roomID', () => {
         socket.emit('roomID', Array.from(socket.rooms)[1])
+    })
+    socket.on('room info', () => {
+        const roomID = Array.from(socket.rooms)[1];
+        if (rooms[roomID]) socket.emit('room info', rooms[roomID].length)
     })
 }
 export default roomSocket;

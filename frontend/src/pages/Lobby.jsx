@@ -15,13 +15,9 @@ const BlurBackground = styled.div`
     height: 100%;
     width: 100%;
     margin: 0;
+    display: flex;
+    justify-content: center;
 `
-const Heading = styled.h1`
-    font-size: 2rem;
-    color: red;
-    margin-bottom: 1rem;
-    text-align: center;
-`;
 
 const Button = styled.button`
     padding: 0.5rem 1rem;
@@ -50,13 +46,30 @@ const Input = styled.input`
 const Container = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    height: 40%;
+    padding-bottom: 100px;
+    width: 400px;
+    margin: auto;
+    border: 2px solid rgba(170, 11, 214, 0.8);
+    border-radius: 10px;
+    background-color: rgba(0,0,0, 0.4);
+    box-shadow: 0 4px 15px 2px rgba(0, 0, 0, 0.5);
+`;
+const ErrorMessage = styled.p`
+    color: red;
+    font-size: 1.1rem;
+    min-height: 1.4rem;
+    margin-bottom: 0;
+    margin-top: 1.5rem;
 `;
 
 function Lobby() {
     const navigate = useNavigate();
     const socket = useSocket();
     const [roomID, setRoomID] = useState("");
+    const [error, setError] = useState("");
 
     useEffect(() => {
         if (!socket) return;
@@ -68,7 +81,7 @@ function Lobby() {
             navigate('/game');
         });
         socket.on('error', (error) => {
-            console.log(error);
+            setError(error)
         });
         return () => {
             socket.off("room created");
@@ -81,19 +94,24 @@ function Lobby() {
         socket.emit("create room");
     }
     const joinRoom = (ID) => {
+        if (!ID){
+            setError("Room ID cannot be empty!")
+            return;
+        }
         socket.emit("join room", ID);
     }
     return (
         <Wrapper>
             <BlurBackground>
                 <Container>
-                    <Button style={{marginTop: '200px'}} onClick={createRoom}>Create Room</Button>
+                    <Button onClick={createRoom}>Create Room</Button>
                     <Input
                         type="text"
                         placeholder="Enter Room ID"
                         onChange={(e) => setRoomID(e.target.value)}
                     />
                     <Button onClick={() => joinRoom(roomID)}>Join Room</Button>
+                    <ErrorMessage>{error}</ErrorMessage>
                 </Container>
             </BlurBackground>
         </Wrapper>

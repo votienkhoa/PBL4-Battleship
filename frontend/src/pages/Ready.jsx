@@ -16,6 +16,22 @@ const EnemyField = styled.div`
 const MyField = styled.div`
     margin-right: 80px;
 `;
+const PlayerNameBox = styled.div`
+    width: 200px;
+    height: 40px;
+    min-height: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+`;
 const ReadyButton = styled.button`
     display: block;
     transform: skew(-25deg);
@@ -56,7 +72,6 @@ const LeaveButton = styled.button`
         filter: brightness(0.8);
     }
 `;
-
 const ButtonText = styled.p`
     color: white;
     font-family: 'Inter', sans-serif;
@@ -67,14 +82,38 @@ const ButtonText = styled.p`
     letter-spacing: 3px;
     transform: skew(20deg);
 `;
+const dimBoard = {
+    opacity: 0.7,
+    filter: 'grayscale(100%)'
+}
 function Ready() {
     const socket = useSocket();
     const [isReady, setReady] = useState(false);
     const [isEnemyReady, setEnemyReady] = useState(false);
+    const [isFull, setFull] = useState(false);
     useEffect(() => {
+        socket.emit('room info');
+        socket.on('room info', (numPlayers) => {
+            console.log(numPlayers);
+            if (numPlayers === 2) {
+                setFull(true);
+            } else {
+                setFull(false);
+            }
+        })
         socket.on('enemy ready', () => {
             setEnemyReady(true);
         })
+        socket.on('enemy joined', () => {
+            setFull(true);
+            console.log(isFull);
+        })
+
+        return () => {
+            socket.off('room info');
+            socket.off("enemy ready");
+            socket.off("enemy joined");
+        }
     }, [socket]);
     const onReady = () => {
         console.log("ready");
@@ -84,12 +123,14 @@ function Ready() {
         <>
             <StyledContainer>
                 <MyField>
+                    <PlayerNameBox>PLAYER: HUY</PlayerNameBox>
                     <Battlefield isReady={isReady}/>
                     <h1 style={{marginBottom: '0'}}>{isReady ? "Ready" : null}</h1>
                 </MyField>
-                <EnemyField>
+                <EnemyField style={!isFull ? dimBoard : null}>
+                    <PlayerNameBox>{isFull ? 'Khoa' : ''}</PlayerNameBox>
                     <BattlefieldBoard/>
-                    <h1>{isEnemyReady ? "Ready" : null}</h1>
+                    <h1 style={{minHeight:'20px'}}>{isEnemyReady ? "Ready" : null}</h1>
                 </EnemyField>
             </StyledContainer>
             <ReadyButton onClick={onReady}>

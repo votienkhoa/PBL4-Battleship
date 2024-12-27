@@ -1,6 +1,8 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import {IconButton, InputAdornment, OutlinedInput, TextField} from "@mui/material";
+import {AccountCircle} from "@mui/icons-material";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -30,6 +32,23 @@ function Login() {
                 <br/>
                 <button type="submit">Login</button>
             </form>
+            <TextField
+                variant="outlined"
+                label="Username"
+                required
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                        borderRadius: '30px',
+                        color: 'lightgrey'
+                    },
+                }}
+            />
+            <TextField
+                variant="outlined"
+                label="Password"
+                required
+            />
+
         </div>
     );
 }

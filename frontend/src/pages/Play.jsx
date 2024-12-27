@@ -6,7 +6,7 @@ import {useSocket} from "../context/SocketContext.jsx"
 import {useNavigate} from "react-router-dom";
 
 const StyledContainer = styled.div`
-    margin-top: 50px;
+    margin-top: 100px;
     display: flex;
     justify-content: center;
 `;
@@ -19,15 +19,15 @@ const MyField = styled.div`
 `;
 const StyledChatBox = styled.div`
     position: absolute;
-    top: 490px;
+    top: 600px;
     left: 30px;
 `;
 const StyledNotificationWrapper = styled.div`
     color: whitesmoke;
     letter-spacing: 1px;
     
-    margin: 0 auto;
-    background-color: rgba(0, 0, 0, 0.15);
+    margin: 20px auto;
+    background-color: rgba(0, 0, 0, 0.25);
     height: 50px;
     width: 400px;
     text-align: center;
@@ -37,6 +37,7 @@ const StyledNotificationWrapper = styled.div`
 `
 const dimBoard = {
     pointerEvents: 'none',
+    filter: 'brightness(0.8)',
     opacity: '0.6'
 }
 function Play() {

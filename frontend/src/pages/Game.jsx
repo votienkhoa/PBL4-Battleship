@@ -27,7 +27,8 @@ function Game() {
             setRoomID(ID);
         })
         return () => {
-            socket.off("room status");
+            console.log("unmounted");
+            socket.off("roomID");
             socket.off("game start");
         }
     }, [socket]);
