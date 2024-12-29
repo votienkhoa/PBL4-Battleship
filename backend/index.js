@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
     chatSocket(io,socket);
     readySocket(io,socket, layouts, turns, count);
     playSocket(io,socket, rooms, layouts, turns, count);
-    disconnectSocket(io, socket, rooms, layouts, turns);
+    disconnectSocket(io, socket, rooms, layouts, turns, count);
 })
 
 server.listen(3000, () => {

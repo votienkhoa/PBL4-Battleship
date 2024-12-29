@@ -19,7 +19,7 @@ const playSocket = (io, socket, rooms, layouts, turns, count) => {
             return rooms[roomID][0];
         }
         // io.to(roomID).emit('shoot', position);
-        socket.to(roomID).emit('shoot', position);
+        // socket.to(roomID).emit('shoot', position);
 
         let hit = false;
         enemyLayout.forEach((ship) => {
@@ -41,19 +41,19 @@ const playSocket = (io, socket, rooms, layouts, turns, count) => {
                 }
                 hit = true;
             }
-            if (count[roomID][enemyID()] === 0){
-                io.to(roomID).emit('game over', {winner: socket.id});
-                socket.emit('game over', {winner: socket.id});
-                // delete rooms[roomID];
-                // delete layouts[roomID];
-                // delete turns[roomID];
-                // delete count[roomID];
-            }
         })
+        if (count[roomID][enemyID()] === 0){
+            io.to(roomID).emit('game over', {winner: socket.id});
+            socket.emit('game over', {winner: socket.id});
+            delete rooms[roomID];
+            delete layouts[roomID];
+            delete turns[roomID];
+            delete count[roomID];
+        }
         if (!hit){
             turns[roomID] = enemyID();
-            socket.to(roomID).emit('self', {position: position, status: "miss", type: "self"});
-            socket.emit('enemy', {position: position, status: "miss", type: "enemy"});
+            socket.to(roomID).emit('self', {position: position, status: "miss"});
+            socket.emit('enemy', {position: position, status: "miss"});
         }
     })
 

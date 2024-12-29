@@ -11,7 +11,7 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://192.168.1.62:3000/login', {email, password})
+        axios.post('http://localhost:3000/login', {email, password})
             .then(result => {
                 console.log(result.data);
                 if (result.data === "Success"){

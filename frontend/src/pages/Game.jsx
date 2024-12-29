@@ -11,13 +11,36 @@ const Wrapper = styled.div`
     height: 100vh;
 `;
 const BlurBackground = styled.div`
+    position: relative;
     backdrop-filter: blur(6px);
-    height: 100%;
-    width: 100%;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    padding: 20px
 `
+const RoomIDWrapper = styled.div`
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 13%;
+    width: 13%;
+    //margin: 20px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    
+    border: 2px solid rgba(170, 11, 214, 0.8);
+    border-radius: 10px;
+    background-color: rgba(0,0,0, 0.4);
+    box-shadow: 0 4px 15px 2px rgba(0, 0, 0, 0.5);
+`;
+
 
 function Game() {
     const socket = useSocket();
+    const [isStart, setStart] = useState(false)
+    const [roomID, setRoomID] = useState("")
     useEffect(() => {
         if (!socket) return;
         socket.on("game start", () => {
@@ -28,18 +51,18 @@ function Game() {
         })
         return () => {
             console.log("unmounted");
+            socket.emit('leave room', roomID);
             socket.off("roomID");
             socket.off("game start");
         }
-    }, [socket]);
-    const [isStart, setStart] = useState(false);
-    const [roomID, setRoomID] = useState("")
+    }, [roomID, socket]);
+
 
     socket.emit('roomID');
     return (
         <Wrapper>
             <BlurBackground>
-                <h2 style={{margin: '0'}}>Room ID: {roomID}</h2>
+                <RoomIDWrapper>ROOM ID: {roomID}</RoomIDWrapper>
                 {isStart ? (<Play/>) : (<Ready/>)}
             </BlurBackground>
         </Wrapper>

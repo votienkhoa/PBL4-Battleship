@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import {useSocket} from "../context/SocketContext.jsx";
 
 const StyledContainer = styled.div`
-    margin-top: 100px;
+    margin-top: 20vh;
     display: flex;
     justify-content: center;
 `;
@@ -92,7 +92,8 @@ function Ready() {
     const [isEnemyReady, setEnemyReady] = useState(false);
     const [isFull, setFull] = useState(false);
     useEffect(() => {
-        socket.emit('room info');
+        socket.emit('enemy ready status')
+        socket.emit('room info')
         socket.on('room info', (numPlayers) => {
             console.log(numPlayers);
             if (numPlayers === 2) {
@@ -101,13 +102,10 @@ function Ready() {
                 setFull(false);
             }
         })
-        socket.on('enemy ready', () => {
-            setEnemyReady(true);
+        socket.on('enemy ready', (status) => {
+            setEnemyReady(status);
         })
-        socket.on('enemy joined', () => {
-            setFull(true);
-            console.log(isFull);
-        })
+        socket.on('enemy joined', () => setFull(true))
 
         return () => {
             socket.off('room info');

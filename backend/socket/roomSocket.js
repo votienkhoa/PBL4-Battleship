@@ -30,5 +30,8 @@ const roomSocket = (io, socket, rooms) => {
         const roomID = Array.from(socket.rooms)[1];
         if (rooms[roomID]) socket.emit('room info', rooms[roomID].length)
     })
+    socket.on('leave room', (roomId) => {
+        socket.leave(roomId);
+    })
 }
 export default roomSocket;

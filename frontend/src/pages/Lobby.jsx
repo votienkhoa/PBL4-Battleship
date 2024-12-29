@@ -42,7 +42,6 @@ const Input = styled.input`
     border-radius: 5px;
     margin-top: 1rem;
 `;
-
 const Container = styled.div`
     display: flex;
     flex-direction: column;
