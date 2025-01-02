@@ -3,11 +3,13 @@ import Battlefield from "../component/battlefield/Battlefield.jsx";
 import BattlefieldBoard from "../component/battlefield/BattlefieldBoard.jsx";
 import {useEffect, useState} from "react";
 import {useSocket} from "../context/SocketContext.jsx";
+import usePlayer from "../hooks/usePlayer.jsx";
 
 const StyledContainer = styled.div`
     margin-top: 20vh;
     display: flex;
     justify-content: center;
+    margin-bottom: 0;
 `;
 const EnemyField = styled.div`
     pointer-events: none;
@@ -18,49 +20,37 @@ const MyField = styled.div`
 `;
 const PlayerNameBox = styled.div`
     width: 200px;
-    height: 40px;
-    min-height: 40px;
-    background-color: rgba(0, 0, 0, 0.5);
+    height: 69px;
+    min-height: 60px;
+    background-color: rgba(0, 0, 0, 0.5); 
     color: white;
     text-align: center;
-    line-height: 40px;
-    border-radius: 8px;
+    line-height:34px;
+    border-radius: 10px;
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 14px; 
     font-weight: bold;
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease; 
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.7); 
+        transform: scale(1.1);
+    }
 `;
-const ReadyButton = styled.button`
+const StyledButton = styled.button`
     display: block;
     transform: skew(-25deg);
-    background-color: #B846FF;
+    background-color: ${(props) => (props.type === 'ready') ? '#B846FF' : '#FF4C4C'};
     border-style: none;
     text-align: center;
     width: 140px;
     height: 45px;
     padding: 0;
-    margin: 5px auto;
-    &:hover{
-        cursor: pointer;
-        filter: brightness(0.9);
-        box-shadow: 0 0 20px 3px rgba(251,28,122,0.5);
-    }
-    &:active{
-        filter: brightness(0.8);
-    }
-`;
-const LeaveButton = styled.button`
-    display: block;
-    transform: skew(-25deg);
-    background-color: #FF4C4C;
-    border-style: none;
-    text-align: center;
-    width: 140px;
-    height: 45px;
-    padding: 0;
-    margin: 17px auto 0;
+    margin: ${(props) => (props.type === 'leave') ? '20px' : '10px'} auto 10px;
 
     &:hover {
         cursor: pointer;
@@ -86,11 +76,29 @@ const dimBoard = {
     opacity: 0.7,
     filter: 'grayscale(100%)'
 }
+const ratingColor = (rati) => {
+    const rating = Number(rati)
+    return  rating >= 2400 ? 'red' :
+        rating >= 2200 ? 'orange' :
+            rating >= 2000 ? 'yellow' :
+                rating >= 1800 ? 'purple' :
+                    rating >= 1600 ? 'blue' :
+                        rating >= 1400 ? 'cyan' :
+                            rating >= 1200 ? 'green' : 'gray';
+}
 function Ready() {
     const socket = useSocket();
     const [isReady, setReady] = useState(false);
     const [isEnemyReady, setEnemyReady] = useState(false);
     const [isFull, setFull] = useState(false);
+    const [enemy, setEnemy] = useState(null);
+    const {name, rating} = usePlayer()
+    const RatingValue = styled.span`
+        font-size: 14px;
+        font-weight: bold;
+        color: ${() => ratingColor(rating)};
+        margin-left: 5px;
+    `;
     useEffect(() => {
         socket.emit('enemy ready status')
         socket.emit('room info')
@@ -113,30 +121,32 @@ function Ready() {
             socket.off("enemy joined");
         }
     }, [socket]);
-    const onReady = () => {
-        console.log("ready");
-        setReady(true);
-    };
     return (
         <>
             <StyledContainer>
                 <MyField>
-                    <PlayerNameBox>PLAYER: HUY</PlayerNameBox>
+                    <PlayerNameBox>
+                        <div>player: {name}</div>
+                        <div>rating: <RatingValue>{rating}</RatingValue></div>
+                    </PlayerNameBox>
                     <Battlefield isReady={isReady}/>
                     <h1 style={{marginBottom: '0'}}>{isReady ? "Ready" : null}</h1>
                 </MyField>
                 <EnemyField style={!isFull ? dimBoard : null}>
-                    <PlayerNameBox>{isFull ? 'Khoa' : ''}</PlayerNameBox>
+                    <PlayerNameBox>
+                        <div>player: Khoa</div>
+                        <div>rating: <RatingValue>1200</RatingValue></div>
+                    </PlayerNameBox>
                     <BattlefieldBoard/>
                     <h1 style={{minHeight:'20px'}}>{isEnemyReady ? "Ready" : null}</h1>
                 </EnemyField>
             </StyledContainer>
-            <ReadyButton onClick={onReady}>
+            <StyledButton type='ready' onClick= {() => setReady(true)}>
                 <ButtonText>READY</ButtonText>
-            </ReadyButton>
-            <LeaveButton>
+            </StyledButton>
+            <StyledButton type='leave'>
                 <ButtonText>LEAVE</ButtonText>
-            </LeaveButton>
+            </StyledButton>
         </>
     );
 }

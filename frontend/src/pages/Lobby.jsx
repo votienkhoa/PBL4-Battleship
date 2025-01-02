@@ -1,23 +1,9 @@
 import {useEffect, useState} from 'react';
-import { useSocket } from '../context/SocketContext.jsx';
+import {useSocket} from '../context/SocketContext.jsx';
 import {useNavigate} from "react-router-dom";
+import usePlayer from "../hooks/usePlayer"
 import styled from "@emotion/styled";
-import backgroundImage from "../assets/homepage-background.jpeg"
-
-const Wrapper = styled.div`
-    background-image: url(${backgroundImage});
-    background-size: cover;
-    height: 100vh;
-    margin: 0;
-`;
-const BlurBackground = styled.div`
-    backdrop-filter: blur(6px);
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-`
+import BlurOverlay from "../component/BlurOverlay.jsx";
 
 const Button = styled.button`
     padding: 0.5rem 1rem;
@@ -34,15 +20,15 @@ const Button = styled.button`
     &:active {
         filter: brightness(0.7);
     }
-`;
+`
 const Input = styled.input`
     padding: 0.5rem;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-top: 1rem;
-`;
-const Container = styled.div`
+`
+const ActionWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -55,21 +41,73 @@ const Container = styled.div`
     border-radius: 10px;
     background-color: rgba(0,0,0, 0.4);
     box-shadow: 0 4px 15px 2px rgba(0, 0, 0, 0.5);
-`;
+`
+const ActionContainer = styled.div`
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+`
 const ErrorMessage = styled.p`
     color: red;
     font-size: 1.1rem;
     min-height: 1.4rem;
     margin-bottom: 0;
     margin-top: 1.5rem;
-`;
+`
+const PlayerInfoWrapper = styled.div`
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+    width: 13%;
+    min-height: 190px;
 
+    color: white;
+    font-size: 18px;
+    letter-spacing: 1px;
+    
+    border: 2px solid rgba(170, 11, 214, 0.8);
+    border-radius: 10px;
+    background-color: rgba(0,0,0, 0.4);
+    box-shadow: 0 4px 15px 2px rgba(0, 0, 0, 0.5);
+`
+const InfoLabel = styled.div`
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 5px 0;
+`
+const InfoValue = styled.div`
+    font-size: 16px;
+    font-weight: bold;
+    color: #f8f8f8;
+    margin: 5px 0;
+`
+const ratingColor = (rati) => {
+    const rating = Number(rati)
+    return  rating >= 2400 ? 'red' :
+            rating >= 2200 ? 'orange' :
+            rating >= 2000 ? 'yellow' :
+            rating >= 1800 ? 'purple' :
+            rating >= 1600 ? 'blue' :
+            rating >= 1400 ? 'cyan' :
+            rating >= 1200 ? 'green' : 'gray';
+}
 function Lobby() {
     const navigate = useNavigate();
     const socket = useSocket();
     const [roomID, setRoomID] = useState("");
     const [error, setError] = useState("");
-
+    const {name, rating} = usePlayer();
+    const RatingValue = styled.div`
+        font-size: 16px;
+        font-weight: bold;
+        color: ${() => ratingColor(rating)};
+        margin: 5px 0;
+    `;
     useEffect(() => {
         if (!socket) return;
         socket.on("room created", (ID) =>{
@@ -100,9 +138,18 @@ function Lobby() {
         socket.emit("join room", ID);
     }
     return (
-        <Wrapper>
-            <BlurBackground>
-                <Container>
+        <BlurOverlay>
+            <PlayerInfoWrapper>
+                <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>
+                    PLAYER INFO
+                </div>
+                <InfoLabel>Name:</InfoLabel>
+                <InfoValue>{name}</InfoValue>
+                <InfoLabel>Rating:</InfoLabel>
+                <RatingValue>{rating}</RatingValue>
+            </PlayerInfoWrapper>
+            <ActionContainer>
+                <ActionWrapper>
                     <Button onClick={createRoom}>Create Room</Button>
                     <Input
                         type="text"
@@ -111,10 +158,9 @@ function Lobby() {
                     />
                     <Button onClick={() => joinRoom(roomID)}>Join Room</Button>
                     <ErrorMessage>{error}</ErrorMessage>
-                </Container>
-            </BlurBackground>
-        </Wrapper>
-
+                </ActionWrapper>
+            </ActionContainer>
+        </BlurOverlay>
     );
 }
 

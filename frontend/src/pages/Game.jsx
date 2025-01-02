@@ -3,20 +3,8 @@ import styled from "@emotion/styled";
 import {useSocket} from "../context/SocketContext.jsx"
 import Ready from "./Ready.jsx";
 import Play from "./Play.jsx";
-import backgroundImage from "../assets/homepage-background.jpeg"
+import BlurOverlay from "../component/BlurOverlay.jsx";
 
-const Wrapper = styled.div`
-    background-image: url(${backgroundImage});
-    background-size: cover;
-    height: 100vh;
-`;
-const BlurBackground = styled.div`
-    position: relative;
-    backdrop-filter: blur(6px);
-    width: calc(100% - 40px);
-    height: calc(100% - 40px);
-    padding: 20px
-`
 const RoomIDWrapper = styled.div`
     position: absolute;
     display: flex;
@@ -60,12 +48,10 @@ function Game() {
 
     socket.emit('roomID');
     return (
-        <Wrapper>
-            <BlurBackground>
-                <RoomIDWrapper>ROOM ID: {roomID}</RoomIDWrapper>
-                {isStart ? (<Play/>) : (<Ready/>)}
-            </BlurBackground>
-        </Wrapper>
+        <BlurOverlay>
+            <RoomIDWrapper>ROOM ID: {roomID}</RoomIDWrapper>
+            {isStart ? (<Play/>) : (<Ready/>)}
+        </BlurOverlay>
     );
 
 }

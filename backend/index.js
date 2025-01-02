@@ -5,11 +5,14 @@ import http from 'http';
 import cors from 'cors'
 import UserModel from "./models/User.js";
 
+import playerRoutes from "./routes/playerRoutes.js";
+
 import chatSocket from "./socket/chatSocket.js";
 import roomSocket from "./socket/roomSocket.js";
 import readySocket from "./socket/readySocket.js";
 import playSocket from "./socket/playSocket.js";
 import disconnectSocket from "./socket/disconnectSocket.js";
+import jwt from "jsonwebtoken";
 
 const app = express();
 const server = http.createServer(app);
@@ -29,15 +32,18 @@ app.use(cors(corsOptions));
 
 mongoose.connect("mongodb+srv://vtkhoaitf:XFP3mo4HH6Okv3gD@pbl4.icisq.mongodb.net/battleshipDB");
 
+app.use(playerRoutes)
 app.post('/login', (req, res) => {
     const {email, password} = req.body;
     UserModel.findOne({email: email})
         .then(user => {
             if (user){
-                if (user.password === password){
-                    res.json("Success");
-                } else {
-                    res.json("Invalid Password!");
+                if (user.password !== password){
+                    res.json("Invalid password");
+                }
+                else{
+                    const accessToken = jwt.sign({id: user._id}, 'somekeyidk', {expiresIn: '5m'})
+                    res.json({accessToken: accessToken, userId: user._id, rating: user.rating})
                 }
             }
             else {
@@ -48,7 +54,7 @@ app.post('/login', (req, res) => {
 })
 app.post('/register', (req,res) => {
     UserModel.create(req.body)
-        .then(user => {
+        .then( user => {
             res.json("Success");
         })
         .catch(err => res.json(err));
