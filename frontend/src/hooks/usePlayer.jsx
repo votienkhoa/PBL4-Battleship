@@ -10,9 +10,9 @@ const usePlayer = () => {
     const token = localStorage.getItem('site')
 
     useEffect(() => {
-        const playerInfo = async () => {
+        const myInfo = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/playerInfo', {
+                const response = await axios.get('http://localhost:3000/myInfo', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -33,14 +33,23 @@ const usePlayer = () => {
         }
 
         if (token) {
-            playerInfo()
+            myInfo()
         } else {
             navigate('/login')
         }
 
     }, [navigate, token]);
 
-    return { name, rating };
+    const getPlayerInfo = async (playerId) => {
+        try{
+            const response = await axios.get(`http://localhost:3000/playerInfo/${playerId}`)
+            console.log(response.data)
+            return response.data
+        }catch (err) {
+            console.log("API call error:", err);
+        }
+    }
+    return { name, rating, getPlayerInfo };
 }
 
 export default usePlayer;

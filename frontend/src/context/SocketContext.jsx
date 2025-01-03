@@ -12,7 +12,12 @@ export const SocketProvider = ({children}) => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const socketInstance = io(SOCKET_URL);
+        const socketInstance = io(SOCKET_URL, {
+            reconnection: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
+        })
         setSocket(socketInstance);
         return () => {
             if (socketInstance) socketInstance.disconnect();

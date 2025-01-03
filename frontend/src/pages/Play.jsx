@@ -4,6 +4,8 @@ import ChatBox from "../component/chatbox/ChatBox.jsx";
 import {useEffect, useState} from "react";
 import {useSocket} from "../context/SocketContext.jsx"
 import {useNavigate} from "react-router-dom";
+import usePlayer from "../hooks/usePlayer.jsx";
+import PlayerBox from "../component/PlayerBox.jsx";
 
 const StyledContainer = styled.div`
     margin-top: 20vh;
@@ -11,11 +13,23 @@ const StyledContainer = styled.div`
     justify-content: center;
 `;
 const EnemyField = styled.div`
-    margin-left: 80px;
+    margin-left: 110px;
 `;
 const MyField = styled.div`
     pointer-events: none;
-    margin-right: 80px;
+    margin-right: 110px;
+`;
+const LeaveButton = styled.div`
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #B846FF;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
 `;
 const StyledChatBox = styled.div`
     position: absolute;
@@ -47,10 +61,18 @@ const dimBoard = {
 function Play() {
     const navigate = useNavigate();
     const socket = useSocket();
+    const player = usePlayer();
     const [myBoard, setMyBoard] = useState(Array(10).fill(Array(10).fill(null)));
     const [enemyBoard, setEnemyBoard] = useState(Array(10).fill(Array(10).fill(null)));
+    const {name, rating} = usePlayer()
+    const [enemy, setEnemy] = useState({name: '', rating: 0})
     const [turn, setTurn] = useState(false);
     useEffect(() => {
+        socket.emit('enemy info')
+        socket.on('enemy info', async (enemyID) => {
+            const enemyInfo = await player.getPlayerInfo(enemyID)
+            setEnemy(enemyInfo)
+        })
         socket.on("self", (data) => {
             console.log(data);
             setMyBoard(currentBoard => {
@@ -122,11 +144,17 @@ function Play() {
             <StyledNotificationWrapper>
                 <h2 style={{margin: 'auto'}}>{turn ? "YOUR TURN" : "OPPONENT TURN"}</h2>
             </StyledNotificationWrapper>
+            <LeaveButton onClick={() => {
+                socket.disconnect();
+                navigate('/lobby');
+            }}>Leave</LeaveButton>
             <StyledContainer>
                 <MyField style={!turn ? null : dimBoard}>
+                    <PlayerBox name={name} rating={rating}/>
                     <BattlefieldBoard board={myBoard}/>
                 </MyField>
                 <EnemyField style={turn ? null : dimBoard}>
+                    <PlayerBox name={enemy.name} rating={enemy.rating}/>
                     <BattlefieldBoard board={enemyBoard}/>
                 </EnemyField>
             </StyledContainer>

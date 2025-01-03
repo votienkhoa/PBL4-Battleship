@@ -4,6 +4,7 @@ import authenticateToken from "../middleware/authenticateToken.js";
 
 const router = express.Router()
 
-router.get('/playerInfo', authenticateToken, getPlayerInfo)
+router.get('/myInfo', authenticateToken, getPlayerInfo)
+router.get('/playerInfo/:id',getPlayerInfo)
 
 export default router

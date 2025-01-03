@@ -1,4 +1,4 @@
-const disconnectSocket = (io, socket, rooms, layouts, turns, count) => {
+const disconnectSocket = (io, socket, rooms, layouts, turns, count, playersID) => {
     socket.on('disconnect', () => {
         let roomID;
         for (const [room, players] of Object.entries(rooms)) {
@@ -12,6 +12,7 @@ const disconnectSocket = (io, socket, rooms, layouts, turns, count) => {
         delete layouts[roomID];
         delete turns[roomID];
         delete count[roomID];
+        delete playersID[roomID];
         console.log(`User disconnected: ${socket.id}`);
     });
 }

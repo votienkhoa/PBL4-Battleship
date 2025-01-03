@@ -4,6 +4,8 @@ import BattlefieldBoard from "../component/battlefield/BattlefieldBoard.jsx";
 import {useEffect, useState} from "react";
 import {useSocket} from "../context/SocketContext.jsx";
 import usePlayer from "../hooks/usePlayer.jsx";
+import {useNavigate} from "react-router-dom";
+import PlayerBox from "../component/PlayerBox.jsx";
 
 const StyledContainer = styled.div`
     margin-top: 20vh;
@@ -13,33 +15,10 @@ const StyledContainer = styled.div`
 `;
 const EnemyField = styled.div`
     pointer-events: none;
-    margin-left: 80px;
+    margin-left: 110px;
 `;
 const MyField = styled.div`
-    margin-right: 80px;
-`;
-const PlayerNameBox = styled.div`
-    width: 200px;
-    height: 69px;
-    min-height: 60px;
-    background-color: rgba(0, 0, 0, 0.5); 
-    color: white;
-    text-align: center;
-    line-height:34px;
-    border-radius: 10px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px; 
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease; 
-
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.7); 
-        transform: scale(1.1);
-    }
+    margin-right: 110px;
 `;
 const StyledButton = styled.button`
     display: block;
@@ -72,49 +51,63 @@ const ButtonText = styled.p`
     letter-spacing: 3px;
     transform: skew(20deg);
 `;
+const ReadyText = styled.h1`
+    background: linear-gradient(90deg, #ff7eb3, #ff758c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    min-height: 20px;
+    margin-bottom: 0;
+`;
 const dimBoard = {
     opacity: 0.7,
     filter: 'grayscale(100%)'
 }
-const ratingColor = (rati) => {
-    const rating = Number(rati)
-    return  rating >= 2400 ? 'red' :
-        rating >= 2200 ? 'orange' :
-            rating >= 2000 ? 'yellow' :
-                rating >= 1800 ? 'purple' :
-                    rating >= 1600 ? 'blue' :
-                        rating >= 1400 ? 'cyan' :
-                            rating >= 1200 ? 'green' : 'gray';
-}
 function Ready() {
     const socket = useSocket();
+    const player = usePlayer();
+    const navigate = useNavigate();
     const [isReady, setReady] = useState(false);
     const [isEnemyReady, setEnemyReady] = useState(false);
     const [isFull, setFull] = useState(false);
-    const [enemy, setEnemy] = useState(null);
+    const [enemy, setEnemy] = useState({name: '', rating: 0});
     const {name, rating} = usePlayer()
-    const RatingValue = styled.span`
-        font-size: 14px;
-        font-weight: bold;
-        color: ${() => ratingColor(rating)};
-        margin-left: 5px;
-    `;
+    const leaveRoom = () => {
+        socket.emit('leave room');
+        navigate('/lobby')
+    }
     useEffect(() => {
         socket.emit('enemy ready status')
+        //-------------------------------------------------------
         socket.emit('room info')
         socket.on('room info', (numPlayers) => {
-            console.log(numPlayers);
             if (numPlayers === 2) {
                 setFull(true);
             } else {
                 setFull(false);
             }
+            socket.emit('enemy info')
         })
+        //-------------------------------------------------------
+        socket.on('enemy info', async (enemyID) => {
+            const enemyInfo = await player.getPlayerInfo(enemyID)
+            setEnemy(enemyInfo)
+        })
+        //-------------------------------------------------------
         socket.on('enemy ready', (status) => {
             setEnemyReady(status);
         })
-        socket.on('enemy joined', () => setFull(true))
-
+        //-------------------------------------------------------
+        socket.on('enemy joined', () => {
+            socket.emit('enemy info')
+            setFull(true)
+        })
+        //-------------------------------------------------------
+        socket.on('enemy leave', () => {
+            setFull(false)
+            setEnemy({name: '', rating: 0});
+            setEnemyReady(false);
+        })
+        //-------------------------------------------------------
         return () => {
             socket.off('room info');
             socket.off("enemy ready");
@@ -125,26 +118,20 @@ function Ready() {
         <>
             <StyledContainer>
                 <MyField>
-                    <PlayerNameBox>
-                        <div>player: {name}</div>
-                        <div>rating: <RatingValue>{rating}</RatingValue></div>
-                    </PlayerNameBox>
+                    <PlayerBox name={name} rating={rating}/>
                     <Battlefield isReady={isReady}/>
-                    <h1 style={{marginBottom: '0'}}>{isReady ? "Ready" : null}</h1>
+                    <ReadyText>{isReady ? "Ready" : null}</ReadyText>
                 </MyField>
                 <EnemyField style={!isFull ? dimBoard : null}>
-                    <PlayerNameBox>
-                        <div>player: Khoa</div>
-                        <div>rating: <RatingValue>1200</RatingValue></div>
-                    </PlayerNameBox>
+                    <PlayerBox name={enemy.name} rating={enemy.rating}/>
                     <BattlefieldBoard/>
-                    <h1 style={{minHeight:'20px'}}>{isEnemyReady ? "Ready" : null}</h1>
+                    <ReadyText>{isEnemyReady ? "Ready" : null}</ReadyText>
                 </EnemyField>
             </StyledContainer>
             <StyledButton type='ready' onClick= {() => setReady(true)}>
                 <ButtonText>READY</ButtonText>
             </StyledButton>
-            <StyledButton type='leave'>
+            <StyledButton type='leave' onClick={leaveRoom}>
                 <ButtonText>LEAVE</ButtonText>
             </StyledButton>
         </>

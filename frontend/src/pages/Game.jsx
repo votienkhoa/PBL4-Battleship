@@ -38,8 +38,7 @@ function Game() {
             setRoomID(ID);
         })
         return () => {
-            console.log("unmounted");
-            socket.emit('leave room', roomID);
+            // socket.emit('leave room', roomID);
             socket.off("roomID");
             socket.off("game start");
         }

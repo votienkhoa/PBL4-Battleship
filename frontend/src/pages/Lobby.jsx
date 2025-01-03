@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import usePlayer from "../hooks/usePlayer"
 import styled from "@emotion/styled";
 import BlurOverlay from "../component/BlurOverlay.jsx";
+import {useAuth} from "../context/AuthContext.jsx";
 
 const Button = styled.button`
     padding: 0.5rem 1rem;
@@ -99,6 +100,7 @@ const ratingColor = (rati) => {
 function Lobby() {
     const navigate = useNavigate();
     const socket = useSocket();
+    const auth = useAuth();
     const [roomID, setRoomID] = useState("");
     const [error, setError] = useState("");
     const {name, rating} = usePlayer();
@@ -128,14 +130,16 @@ function Lobby() {
     }, [navigate, socket]);
 
     const createRoom = () => {
-        socket.emit("create room");
+        socket.emit("create room", auth.user.id);
+        console.log(socket);
     }
     const joinRoom = (ID) => {
         if (!ID){
             setError("Room ID cannot be empty!")
             return;
         }
-        socket.emit("join room", ID);
+        console.log(auth.user);
+        socket.emit("join room", {ID: ID, playerID: auth.user.id});
     }
     return (
         <BlurOverlay>

@@ -8,7 +8,7 @@ const authenticateToken = (req, res, next) => {
     jwt.verify(token, 'somekeyidk', (err, payload) => {
         // console.log(err)
         if (err) return res.sendStatus(403)
-        req.user = payload
+        req.id = payload.id
         next()
     })
 }
