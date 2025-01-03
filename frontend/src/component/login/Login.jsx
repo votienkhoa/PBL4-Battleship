@@ -1,49 +1,115 @@
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/AuthContext.jsx";
-import axios from "axios";
-import {IconButton, InputAdornment, OutlinedInput, TextField} from "@mui/material";
-import {AccountCircle} from "@mui/icons-material";
+import BlurOverlay from "../BlurOverlay.jsx";
+import styled from "@emotion/styled";
+
+const FormWrapper = styled.div`
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60%;
+    width: 400px;
+    margin: auto;
+    padding-bottom: 80px;
+    border: 2px solid rgba(170, 11, 214, 0.8);
+    border-radius: 10px;
+    background-color: rgba(0,0,0, 0.4);
+    box-shadow: 0 4px 15px 2px rgba(0, 0, 0, 0.5);
+`
+const FormContainer = styled.div`
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+`
+const Input = styled.input`
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    &::placeholder {
+        color: #b0b0b0; 
+        opacity: 0.5;
+    }
+    &:focus {
+        border: 2px solid #aa0bd6;
+    }
+`;
+const Label = styled.label`
+    display: block;
+    font-size: 14px;
+    color: #f5f5f5;
+    text-align: left;
+    margin-top: 10px;
+`;
+const Button = styled.button`
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #aa0bd6, #6d0eaa);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+`;
+const Title = styled.h2`
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 25px;
+`;
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const auth = useAuth()
+    const auth = useAuth();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        auth.login({email: email, password: password})
-    }
-    return (
-        <div>
-            <h2>Login</h2>
-            <form action="" onSubmit={handleSubmit}>
-                <label htmlFor="email">Email</label>
-                <input type="text" name="email" onChange={(e) => setEmail(e.target.value)}/>
-                <br/>
-                <label htmlFor="password">Password</label>
-                <input type="password" name="password" onChange={(e) => setPassword(e.target.value)}/>
-                <br/>
-                <button type="submit">Login</button>
-            </form>
-            <TextField
-                variant="outlined"
-                label="Username"
-                required
-                sx={{
-                    '& .MuiOutlinedInput-root': {
-                        borderRadius: '30px',
-                        color: 'lightgrey'
-                    },
-                }}
-            />
-            <TextField
-                variant="outlined"
-                label="Password"
-                required
-            />
+        auth.login({ email: email, password: password });
+    };
 
-        </div>
+    return (
+        <BlurOverlay>
+            <FormContainer>
+                <FormWrapper>
+                    <form onSubmit={handleSubmit}>
+                        <Title>Login</Title>
+                        <Label>Email</Label>
+                        <Input type="text"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter your email"
+                        />
+                        <Label>Password</Label>
+                        <Input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Enter your password"
+                        />
+                        <Button type="submit">Login</Button>
+                    </form>
+                </FormWrapper>
+            </FormContainer>
+        </BlurOverlay>
     );
 }
 

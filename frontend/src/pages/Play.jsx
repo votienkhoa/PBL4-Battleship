@@ -20,16 +20,29 @@ const MyField = styled.div`
     margin-right: 110px;
 `;
 const LeaveButton = styled.div`
-    width: 30px;
-    height: 30px;
     position: absolute;
-    bottom: 20px;
+    top: 20px;
     right: 20px;
-    padding: 10px 20px;
-    background-color: #B846FF;
-    color: white;
-    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    height: 70px;
+    background-color: rgba(0,0,0, 0.4);
+    border: 2px solid #FF4C4C;
+    color: #FF4C4C;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px 2px rgba(0, 0, 0, 0.3);
     cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.15); 
+        border-color: #FF1F1F; 
+        color: #FF1F1F; 
+        transform: scale(1.1); 
+        box-shadow: 0 6px 20px 4px rgba(255, 76, 76, 0.4); 
+    }
 `;
 const StyledChatBox = styled.div`
     position: absolute;
