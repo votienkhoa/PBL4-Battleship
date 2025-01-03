@@ -6,6 +6,7 @@ const roomSocket = (io, socket, rooms, layouts, turns, counts, playersID) => {
         socket.join(ID);
         playersID[ID] = {}
         playersID[ID][socket.id] = playerId;
+        console.log(rooms);
         socket.emit('room created', ID);
     })
     socket.on("join room", (data) => {

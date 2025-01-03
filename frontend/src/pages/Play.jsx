@@ -122,7 +122,7 @@ function Play() {
             navigate('/lobby');
         })
         socket.on('opponent disconnected', () => {
-            alert("opponent disconnected!!!")
+            alert("opponent leave game!!!")
             navigate('/lobby')
         })
         socket.on("turn", (data) => {
@@ -134,7 +134,7 @@ function Play() {
             socket.off('self');
             socket.off('enemy');
             socket.off('opponent disconnected');
-            socket.off('game over');
+            socket.off('game over')
         };
     }, [navigate, socket]);
 
@@ -145,8 +145,8 @@ function Play() {
                 <h2 style={{margin: 'auto'}}>{turn ? "YOUR TURN" : "OPPONENT TURN"}</h2>
             </StyledNotificationWrapper>
             <LeaveButton onClick={() => {
-                socket.disconnect();
-                navigate('/lobby');
+                socket.emit('leave game')
+                navigate('/lobby')
             }}>Leave</LeaveButton>
             <StyledContainer>
                 <MyField style={!turn ? null : dimBoard}>

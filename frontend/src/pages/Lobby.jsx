@@ -138,7 +138,6 @@ function Lobby() {
             setError("Room ID cannot be empty!")
             return;
         }
-        console.log(auth.user);
         socket.emit("join room", {ID: ID, playerID: auth.user.id});
     }
     return (

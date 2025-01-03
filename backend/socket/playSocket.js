@@ -1,4 +1,4 @@
-const playSocket = (io, socket, rooms, layouts, turns, count) => {
+const playSocket = (io, socket, rooms, layouts, turns, count, playersID) => {
     socket.on('turn',() => {
         const roomID = Array.from(socket.rooms)[1];
         if (socket.id !== turns[roomID]) socket.emit('turn', false);
@@ -55,6 +55,21 @@ const playSocket = (io, socket, rooms, layouts, turns, count) => {
             socket.to(roomID).emit('self', {position: position, status: "miss"});
             socket.emit('enemy', {position: position, status: "miss"});
         }
+    })
+    socket.on('leave game', () => {
+        const roomID = Array.from(socket.rooms)[1];
+        socket.to(roomID).emit('opponent disconnected');
+        const enemyID = rooms[roomID].find(playerId => playerId !== socket.id);
+        const opponentSocket = io.sockets.sockets.get(enemyID);
+        if (opponentSocket) opponentSocket.leave(roomID)
+
+        socket.leave(roomID)
+        delete rooms[roomID]
+        delete layouts[roomID];
+        delete turns[roomID];
+        delete count[roomID];
+        delete playersID[roomID];
+        console.log(`User leave game: ${socket.id}`);
     })
 
 }

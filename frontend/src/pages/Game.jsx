@@ -4,6 +4,7 @@ import {useSocket} from "../context/SocketContext.jsx"
 import Ready from "./Ready.jsx";
 import Play from "./Play.jsx";
 import BlurOverlay from "../component/BlurOverlay.jsx";
+import {useNavigate} from "react-router-dom";
 
 const RoomIDWrapper = styled.div`
     position: absolute;
@@ -27,6 +28,7 @@ const RoomIDWrapper = styled.div`
 
 function Game() {
     const socket = useSocket();
+    const navigate = useNavigate();
     const [isStart, setStart] = useState(false)
     const [roomID, setRoomID] = useState("")
     useEffect(() => {
@@ -37,6 +39,7 @@ function Game() {
         socket.on("roomID", (ID) => {
             setRoomID(ID);
         })
+
         return () => {
             // socket.emit('leave room', roomID);
             socket.off("roomID");

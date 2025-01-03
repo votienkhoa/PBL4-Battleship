@@ -71,7 +71,7 @@ io.on("connection", (socket) => {
     roomSocket(io, socket, rooms, layouts, turns, count, playersID);
     chatSocket(io, socket);
     readySocket(io, socket, layouts, turns, count);
-    playSocket(io, socket, rooms, layouts, turns, count);
+    playSocket(io, socket, rooms, layouts, turns, count, playersID);
     disconnectSocket(io, socket, rooms, layouts, turns, count, playersID);
 })
 
