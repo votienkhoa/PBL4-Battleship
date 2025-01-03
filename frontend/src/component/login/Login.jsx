@@ -31,7 +31,7 @@ const Input = styled.input`
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 15px;
-    border: none;
+    border: 2px solid transparent;
     border-radius: 8px;
     font-size: 14px;
     outline: none;
@@ -75,15 +75,23 @@ const Title = styled.h2`
     margin-bottom: 20px;
     font-size: 25px;
 `;
+const ErrorMessage = styled.p`
+    text-align: center;
+    color: red;
+    font-size: 1.1rem;
+    min-height: 1.4rem;
+    margin-bottom: 0;
+    margin-top: 1.5rem;
+`
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const auth = useAuth();
+    const { login, error } = useAuth();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        auth.login({ email: email, password: password });
+        login({ email: email, password: password });
     };
 
     return (
@@ -92,6 +100,7 @@ function Login() {
                 <FormWrapper>
                     <form onSubmit={handleSubmit}>
                         <Title>Login</Title>
+                        <ErrorMessage>{error}</ErrorMessage>
                         <Label>Email</Label>
                         <Input type="text"
                             value={email}

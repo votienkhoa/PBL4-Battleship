@@ -7,6 +7,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("site") || "");
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
     useEffect(() => {
         const verifyUser = async () => {
@@ -21,8 +22,9 @@ const AuthProvider = ({ children }) => {
                     console.log(response.data)
                     setUser(response.data)
                 } catch (err){
-                    console.log(err)
-                    navigate('/login');
+                    console.error(err);
+                    setError("The session has expired, please log in again!");
+                    logout();
                 } finally {
                     setLoading(false)
                 }
@@ -39,22 +41,33 @@ const AuthProvider = ({ children }) => {
                 },
             });
             const res = response.data;
-            console.log(res);
-            if (res){
+            console.log("response: " + response)
+            console.log("res: " + res)
+            if (res.userId){
                 console.log("userid: " + res.userId)
                 setUser({id: res.userId, rating: res.rating})
                 setToken(res.accessToken);
+                setError(null);
                 localStorage.setItem("site", res.accessToken);
                 navigate("/lobby");
-                return;
             }
-            throw new Error(res.message);
+            else{
+                console.log(res);
+                setError(res);
+            }
         } catch (err){
             console.error(err);
+            setError(err.response?.data?.message || "Đăng nhập thất bại. Vui lòng thử lại!");
         }
     }
+    const logout = () => {
+        setUser(null);
+        setToken("");
+        localStorage.removeItem("site");
+        navigate("/login");
+    };
     return (
-        <AuthContext.Provider value={{user, token, loading, login}}>
+        <AuthContext.Provider value={{user, token,error, loading, login, logout}}>
             {children}
         </AuthContext.Provider>
     )
