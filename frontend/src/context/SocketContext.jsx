@@ -1,7 +1,7 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {io} from "socket.io-client";
 
-const SOCKET_URL = 'http://localhost:3000';
+const SOCKET_URL = import.meta.env.VITE_BACKEND_URL;
 const SocketContext = createContext();
 
 export const useSocket = () => {
@@ -12,12 +12,7 @@ export const SocketProvider = ({children}) => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const socketInstance = io(SOCKET_URL, {
-            reconnection: true,
-            reconnectionAttempts: 5,
-            reconnectionDelay: 1000,
-            reconnectionDelayMax: 5000,
-        })
+        const socketInstance = io(SOCKET_URL)
         setSocket(socketInstance);
         return () => {
             if (socketInstance) socketInstance.disconnect();

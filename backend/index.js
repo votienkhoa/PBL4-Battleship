@@ -1,5 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+dotenv.config()
 import {Server} from "socket.io";
 import http from 'http';
 import cors from 'cors'
@@ -13,6 +15,10 @@ import readySocket from "./socket/readySocket.js";
 import playSocket from "./socket/playSocket.js";
 import disconnectSocket from "./socket/disconnectSocket.js";
 import jwt from "jsonwebtoken";
+
+const MONGODB_URI = process.env.MONGODB_URI
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN_SECRET
+const PORT = process.env.PORT
 
 const app = express();
 const server = http.createServer(app);
@@ -30,7 +36,7 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(cors(corsOptions));
 
-mongoose.connect("mongodb+srv://vtkhoaitf:XFP3mo4HH6Okv3gD@pbl4.icisq.mongodb.net/battleshipDB");
+mongoose.connect(MONGODB_URI);
 
 app.use(playerRoutes)
 app.post('/login', (req, res) => {
@@ -42,7 +48,7 @@ app.post('/login', (req, res) => {
                     res.json("Invalid password");
                 }
                 else{
-                    const accessToken = jwt.sign({id: user._id}, 'somekeyidk', {expiresIn: '5m'})
+                    const accessToken = jwt.sign({id: user._id}, ACCESS_TOKEN, {expiresIn: '5m'})
                     res.json({accessToken: accessToken, userId: user._id, rating: user.rating})
                 }
             }
@@ -84,6 +90,6 @@ io.on("connection", (socket) => {
     disconnectSocket(io, socket, rooms, layouts, turns, count, playersID);
 })
 
-server.listen(3000, () => {
-    console.log("Server is running on port 3000");
+server.listen(PORT, () => {
+    console.log("Server is running on port " + PORT);
 });

@@ -3,6 +3,8 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 const AuthContext = createContext();
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("site") || "");
@@ -13,13 +15,12 @@ const AuthProvider = ({ children }) => {
         const verifyUser = async () => {
             if (token){
                 try{
-                    const response = await axios.get("http://localhost:3000/myInfo", {
+                    const response = await axios.get(`${BACKEND_URL}/myInfo`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
                     })
                     console.log("verify called")
-                    console.log(response.data)
                     setUser(response.data)
                 } catch (err){
                     console.error(err);
@@ -35,14 +36,12 @@ const AuthProvider = ({ children }) => {
     }, [navigate, token]);
     const login = async (data) => {
         try{
-            const response = await axios.post("http://localhost:3000/login", data, {
+            const response = await axios.post(`${BACKEND_URL}/login`, data, {
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
             const res = response.data;
-            console.log("response: " + response)
-            console.log("res: " + res)
             if (res.userId){
                 console.log("userid: " + res.userId)
                 setUser({id: res.userId, rating: res.rating})

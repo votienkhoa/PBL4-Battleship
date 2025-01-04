@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import BlurOverlay from "../component/BlurOverlay.jsx";
 import {ErrorMessage, FormContainer, FormWrapper, Input, Label, Title, Button, StyledLink} from "../component/StyledForm.jsx";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 function Register() {
     const [name, setName] = useState("");
@@ -15,7 +16,7 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/register', {name, email, password})
+            const response = await axios.post(`${BACKEND_URL}/register`, {name, email, password})
             if (response.status === 201) {
                 navigate('/login');
             }

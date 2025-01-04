@@ -89,6 +89,7 @@ function Ready() {
         })
         //-------------------------------------------------------
         socket.on('enemy info', async (enemyID) => {
+            console.log(enemyID)
             const enemyInfo = await player.getPlayerInfo(enemyID)
             setEnemy(enemyInfo)
         })

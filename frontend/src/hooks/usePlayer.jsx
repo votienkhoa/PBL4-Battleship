@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
 const usePlayer = () => {
     const [name, setName] = useState("")
     const [rating, setRating] = useState(0)
@@ -12,7 +14,7 @@ const usePlayer = () => {
     useEffect(() => {
         const myInfo = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/myInfo', {
+                const response = await axios.get(`${BACKEND_URL}/myInfo`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -42,8 +44,8 @@ const usePlayer = () => {
 
     const getPlayerInfo = async (playerId) => {
         try{
-            const response = await axios.get(`http://localhost:3000/playerInfo/${playerId}`)
-            console.log(response.data)
+            console.log("idd: " + playerId)
+            const response = await axios.get(`${BACKEND_URL}/playerInfo/${playerId}`)
             return response.data
         }catch (err) {
             console.log("API call error:", err);
