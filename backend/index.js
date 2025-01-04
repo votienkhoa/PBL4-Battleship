@@ -52,13 +52,22 @@ app.post('/login', (req, res) => {
         })
         .catch(err => res.json(err));
 })
-app.post('/register', (req,res) => {
-    UserModel.create(req.body)
-        .then( user => {
-            res.json("Success");
-        })
-        .catch(err => res.json(err));
-})
+app.post('/register', async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        //----------
+        const existingUser = await UserModel.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already exists!' });
+        }
+        //-----------
+        await UserModel.create({ name, email, password });
+        res.status(201).json("Success");
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'An error occurred during registration!' });
+    }
+});
 
 const rooms = {};
 const layouts = {};

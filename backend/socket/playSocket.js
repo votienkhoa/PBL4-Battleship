@@ -1,3 +1,5 @@
+import UserModel from "../models/User.js";
+
 const playSocket = (io, socket, rooms, layouts, turns, count, playersID) => {
     socket.on('turn',() => {
         const roomID = Array.from(socket.rooms)[1];
@@ -18,8 +20,6 @@ const playSocket = (io, socket, rooms, layouts, turns, count, playersID) => {
             if (rooms[roomID][0] === socket.id) return rooms[roomID][1];
             return rooms[roomID][0];
         }
-        // io.to(roomID).emit('shoot', position);
-        // socket.to(roomID).emit('shoot', position);
 
         let hit = false;
         enemyLayout.forEach((ship) => {
@@ -45,10 +45,20 @@ const playSocket = (io, socket, rooms, layouts, turns, count, playersID) => {
         if (count[roomID][enemyID()] === 0){
             io.to(roomID).emit('game over', {winner: socket.id});
             socket.emit('game over', {winner: socket.id});
+            //----------
+            const winnerID = playersID[roomID][socket.id]
+            const loserID = playersID[roomID][enemyID()]
+            handleGameResult(winnerID, loserID)
+            //----------
+            socket.leave(roomID)
+            const opponentSocket = io.sockets.sockets.get(enemyID());
+            if (opponentSocket) opponentSocket.leave(roomID)
+
             delete rooms[roomID];
             delete layouts[roomID];
             delete turns[roomID];
             delete count[roomID];
+            delete playersID[roomID];
         }
         if (!hit){
             turns[roomID] = enemyID();
@@ -73,4 +83,55 @@ const playSocket = (io, socket, rooms, layouts, turns, count, playersID) => {
     })
 
 }
+const getUserRating = async (userID) => {
+    try{
+        const user = await UserModel.findById(userID);
+        if (!user){
+            throw new Error("User not found!");
+        }
+        return user.rating;
+    } catch (err){
+        console.error("Error fetching user rating: ", err);
+        throw err;
+    }
+}
+const updateUserRating = async (winnerID, loserID) => {
+    try{
+        const winnerRating = await getUserRating(winnerID);
+        const loserRating = await getUserRating(loserID);
+
+        const K = 100;
+        const expectedWinner = 1 / (1 + Math.pow(10, (loserRating - winnerRating) / 400));
+        const expectedLoser = 1 / (1 + Math.pow(10, (winnerRating - loserRating) / 400));
+
+        let winnerNewRating = winnerRating + K * (1 - expectedWinner);
+        let loserNewRating = loserRating - K * (1 - expectedLoser);
+
+        loserNewRating = Math.round(loserNewRating);
+        winnerNewRating = Math.round(winnerNewRating);
+
+        let totalRatingBefore = winnerRating + loserRating;
+        let totalRatingAfter = winnerNewRating + loserNewRating;
+        if (totalRatingBefore !== totalRatingAfter) {
+            let adjustment = totalRatingBefore - totalRatingAfter;
+            winnerNewRating += Math.round(adjustment / 2);
+            loserNewRating += Math.round(adjustment / 2);
+        }
+
+        await UserModel.findByIdAndUpdate(winnerID, { rating: winnerNewRating });
+        await UserModel.findByIdAndUpdate(loserID, { rating: loserNewRating });
+    } catch (err){
+        console.error("Error updating user ratings: ", err);
+        throw err;
+    }
+}
+const handleGameResult = async (winnerID, loserID) => {
+    const updateResult = await updateUserRating(winnerID, loserID);
+
+    if (updateResult) {
+        console.log("Game result processed, ratings updated.");
+    } else {
+        console.log("Error updating ratings.");
+    }
+};
 export default playSocket;

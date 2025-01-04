@@ -76,52 +76,47 @@ const Title = styled.h2`
     margin-bottom: 20px;
     font-size: 25px;
 `;
+const ErrorMessage = styled.p`
+    text-align: center;
+    color: red;
+    font-size: 1.1rem;
+    min-height: 1.4rem;
+    margin-bottom: 0;
+    margin-top: 1.5rem;
+`
 
 function Register() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3000/register', {name, email, password})
-            .then(result => {
-                console.log(result);
-                if (result.data === "Success"){
-                    navigate('/login');
-                }
-                else console.log(result.data);
-            })
-            .catch(error => console.error(error));
+        try {
+            const response = await axios.post('http://localhost:3000/register', {name, email, password})
+            if (response.status === 201) {
+                navigate('/login');
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || 'Registration failed. Please try again!');
+        }
     }
     return (
-        // <div>
-        //     <h2>Register</h2>
-        //     <form action="" onSubmit={handleSubmit}>
-        //         <label htmlFor="name">Name</label>
-        //         <input type="text" name="email" onChange={(e) => setName(e.target.value)}/>
-        //         <br/>
-        //         <label htmlFor="email">Email</label>
-        //         <input type="text" name="email" onChange={(e) => setEmail(e.target.value)}/>
-        //         <br/>
-        //         <label htmlFor="password">Password</label>
-        //         <input type="password" name="password" onChange={(e) => setPassword(e.target.value)}/>
-        //         <br/>
-        //         <button type="submit">Register</button>
-        //     </form>
-        // </div>
         <BlurOverlay>
             <FormContainer>
                 <FormWrapper>
                     <form onSubmit={handleSubmit}>
                         <Title>Register</Title>
+                        <ErrorMessage>{error}</ErrorMessage>
                         <Label>Email</Label>
                         <Input
                             type="text"
                            value={email}
                            onChange={(e) => setEmail(e.target.value)}
                            placeholder="Enter your email"
+                            required
                         />
                         <Label>Username</Label>
                         <Input
@@ -129,6 +124,7 @@ function Register() {
                            value={name}
                            onChange={(e) => setName(e.target.value)}
                            placeholder="Enter your username"
+                            required
                         />
                         <Label>Password</Label>
                         <Input
@@ -136,6 +132,7 @@ function Register() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter your password"
+                            required
                         />
                         <Button type="submit">Register</Button>
                     </form>
