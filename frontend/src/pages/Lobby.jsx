@@ -87,6 +87,32 @@ const InfoValue = styled.div`
     color: #f8f8f8;
     margin: 5px 0;
 `
+const LeaveButton = styled.div`
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    height: 70px;
+    background-color: rgba(0,0,0, 0.4);
+    border: 2px solid #FF4C4C;
+    color: #FF4C4C;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px 2px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.15); 
+        border-color: #FF1F1F; 
+        color: #FF1F1F; 
+        transform: scale(1.1); 
+        box-shadow: 0 6px 20px 4px rgba(255, 76, 76, 0.4); 
+    }
+`;
+
 const ratingColor = (rati) => {
     const rating = Number(rati)
     return  rating >= 2400 ? 'red' :
@@ -140,6 +166,9 @@ function Lobby() {
         }
         socket.emit("join room", {ID: ID, playerID: auth.user.id});
     }
+    const logOut = () => {
+        auth.logout();
+    }
     return (
         <BlurOverlay>
             <PlayerInfoWrapper>
@@ -151,6 +180,7 @@ function Lobby() {
                 <InfoLabel>Rating:</InfoLabel>
                 <RatingValue>{rating}</RatingValue>
             </PlayerInfoWrapper>
+            <LeaveButton onClick={logOut}>Log out</LeaveButton>
             <ActionContainer>
                 <ActionWrapper>
                     <Button onClick={createRoom}>Create Room</Button>
