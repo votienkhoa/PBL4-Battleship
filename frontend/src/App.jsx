@@ -2,10 +2,10 @@ import HomePage from "./pages/HomePage/HomePage.jsx";
 import {animated, useSpring} from "@react-spring/web";
 import "./App.css"
 import backgroundImage from "./assets/homepage-background.jpeg"
-import Register from "./component/login/Register.jsx";
+import Register from "./pages/Register.jsx";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {SocketProvider} from './context/SocketContext.jsx';
-import Login from "./component/login/Login.jsx";
+import Login from "./pages/Login.jsx";
 import Lobby from "./pages/Lobby.jsx";
 import Game from "./pages/Game.jsx";
 import PrivateRoute from "./component/PrivateRoute.jsx";
