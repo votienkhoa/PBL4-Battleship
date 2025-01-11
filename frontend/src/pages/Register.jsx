@@ -16,7 +16,7 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${BACKEND_URL}/register`, {name, email, password})
+            const response = await axios.post(`${BACKEND_URL}/api/register`, {name, email, password})
             if (response.status === 201) {
                 navigate('/login');
             }

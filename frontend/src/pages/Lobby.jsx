@@ -157,7 +157,6 @@ function Lobby() {
 
     const createRoom = () => {
         socket.emit("create room", auth.user.id);
-        console.log(socket);
     }
     const joinRoom = (ID) => {
         if (!ID){

@@ -38,8 +38,8 @@ app.use(cors(corsOptions));
 
 mongoose.connect(MONGODB_URI);
 
-app.use(playerRoutes)
-app.post('/login', (req, res) => {
+app.use('/api', playerRoutes)
+app.post('/api/login', (req, res) => {
     const {email, password} = req.body;
     UserModel.findOne({email: email})
         .then(user => {
@@ -58,7 +58,7 @@ app.post('/login', (req, res) => {
         })
         .catch(err => res.json(err));
 })
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;
         //----------

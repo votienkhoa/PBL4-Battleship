@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
         const verifyUser = async () => {
             if (token){
                 try{
-                    const response = await axios.get(`${BACKEND_URL}/myInfo`, {
+                    const response = await axios.get(`${BACKEND_URL}/api/myInfo`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
@@ -36,7 +36,7 @@ const AuthProvider = ({ children }) => {
     }, [navigate, token]);
     const login = async (data) => {
         try{
-            const response = await axios.post(`${BACKEND_URL}/login`, data, {
+            const response = await axios.post(`${BACKEND_URL}/api/login`, data, {
                 headers: {
                     "Content-Type": "application/json",
                 },

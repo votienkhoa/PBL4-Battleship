@@ -14,7 +14,7 @@ const usePlayer = () => {
     useEffect(() => {
         const myInfo = async () => {
             try {
-                const response = await axios.get(`${BACKEND_URL}/myInfo`, {
+                const response = await axios.get(`${BACKEND_URL}/api/myInfo`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -45,7 +45,7 @@ const usePlayer = () => {
     const getPlayerInfo = async (playerId) => {
         try{
             console.log("idd: " + playerId)
-            const response = await axios.get(`${BACKEND_URL}/playerInfo/${playerId}`)
+            const response = await axios.get(`${BACKEND_URL}/api/playerInfo/${playerId}`)
             return response.data
         }catch (err) {
             console.log("API call error:", err);
