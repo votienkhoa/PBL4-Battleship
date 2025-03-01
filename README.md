@@ -1,6 +1,6 @@
 # 🚢 PBL4-Battleship
 
-A real-time, two-player Battleship game developed as part of a Project-Based Learning (PBL) course. Built using the **MERN stack** (MongoDB, Express.js, React.js, Node.js) and **WebSocket** for real-time communication.
+A real-time, two-player Battleship game developed as part of a Project-Based Learning (PBL) course. Built using the **MERN stack** (*MongoDB, Express.js, React.js, Node.js*) and **WebSocket** for real-time communication.
 
 ---
 
@@ -11,7 +11,7 @@ A real-time, two-player Battleship game developed as part of a Project-Based Lea
 - **🏆 Win/lose conditions**: The game ends when all ships of one player are sunk.
 - **👥 Multiplayer support**: Two players can join and play together seamlessly.
 
----
+
 
 ## ⚡ Technologies Used
 
@@ -23,12 +23,12 @@ A real-time, two-player Battleship game developed as part of a Project-Based Lea
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
----
+
 
 ## 🚀 Live Demo
 Check out the live demo of the project here:  
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Open-purple?style=for-the-badge)](https://kohu-battleship.onrender.com)
----
+
 
 ## 🖥️ Installation
 
@@ -101,21 +101,20 @@ Here are some screenshots of the project in action:
 
 ---
 ## 🤝 Contributing
-   1. Fork the repository
-   2. Create your branch 
+   1. **Fork the repository**:
+   2. **Create your branch**:
       ```bash
       git checkout -b feature/AmazingFeature
       ```
-   3. Commit your changes:
+   3. **Commit your changes**:
       ```bash
       git commit -m 'Add some AmazingFeature'
       ```
-   4. Push to the branch:
+   4. **Push to the branch**:
       ```bash
       git push origin feature/AmazingFeature
       ```
-   5. Open a Pull Request
----
+   5. **Open a Pull Request**
 ## 📞 Contact
 
 If you have any questions, suggestions, or just want to say hello, feel free to reach out:
