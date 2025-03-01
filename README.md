@@ -24,6 +24,7 @@ A real-time, two-player Battleship game developed as part of a Project-Based Lea
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ---
+
 ## 🚀 Live Demo
 Check out the live demo of the project here:  
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Open-purple?style=for-the-badge)](https://kohu-battleship.onrender.com)
@@ -88,12 +89,15 @@ Follow these steps to set up the project locally:
 Here are some screenshots of the project in action:
 
 ### 1. **Home Page**
+![image](https://github.com/user-attachments/assets/26993c48-9243-473e-813a-74c45fad8644)
 
 ### 2. **Login**
+![image](https://github.com/user-attachments/assets/3fe48771-61a9-4be8-8e60-ca690d05fdc4)
+
+![image](https://github.com/user-attachments/assets/69fb184f-a892-42ff-94d6-bb292ec3d53a)
 
 ### 3. **Gameplay**
-
-### 4. **Game Over**
+![image](https://github.com/user-attachments/assets/d4a0cdba-0475-42a0-a092-1e08e90973dd)
 
 ---
 ## 🤝 Contributing
