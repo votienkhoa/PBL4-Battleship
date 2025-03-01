@@ -1,16 +1,18 @@
+import styled from "@emotion/styled";
+import { animated, useSpring } from "@react-spring/web";
+import { Navigate, Route, Routes } from "react-router-dom";
+
+import backgroundImage from "./assets/homepage-background.jpeg";
 import HomePage from "./pages/HomePage/HomePage.jsx";
-import {animated, useSpring} from "@react-spring/web";
-import "./App.css"
-import backgroundImage from "./assets/homepage-background.jpeg"
 import Register from "./pages/Register.jsx";
-import {Navigate, Route, Routes} from "react-router-dom";
-import {SocketProvider} from './context/SocketContext.jsx';
 import Login from "./pages/Login.jsx";
 import Lobby from "./pages/Lobby.jsx";
 import Game from "./pages/Game.jsx";
+
 import PrivateRoute from "./component/PrivateRoute.jsx";
 import AuthProvider from "./context/AuthContext.jsx";
-import styled from "@emotion/styled";
+import { SocketProvider } from './context/SocketContext.jsx';
+
 
 function App() {
     const fade = useSpring({
@@ -31,7 +33,7 @@ function App() {
                 <animated.div style={fade}>
                     <GlobalStyle>
                         <Routes>
-                            <Route path="/" element={<Navigate to="/lobby" replace/>}/>
+                            <Route path="/" element={<Navigate to="/home" replace/>}/>
                             <Route path="/register" element={<Register/>}/>
                             <Route path="/about" element={<HomePage/>}/>
                             <Route path="/support" element={<HomePage/>}/>

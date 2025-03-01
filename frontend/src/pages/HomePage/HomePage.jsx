@@ -11,19 +11,16 @@ function HomePage(){
         config: {tension: 100}
     })
     return(
-
         <>
-            <div className="homepage-container">
-                <NavBar/>
-                <animated.div className="homepage-description" style={springs}>
-                    <h1>BATTLESHIP</h1>
-                    <p>{description.toUpperCase()}</p>
-                    <br/>
-                    <Link to="/lobby">
-                        <NavButton name="Play" notNav={true} isActive={true}/>
-                    </Link>
-                </animated.div>
-            </div>
+            <NavBar/>
+            <animated.div className="homepage-description" style={springs}>
+                <h1>BATTLESHIP</h1>
+                <p>{description.toUpperCase()}</p>
+                <br/>
+                <Link to="/lobby">
+                    <NavButton name="Play" notNav={true} isActive={true}/>
+                </Link>
+            </animated.div>
         </>
     )
 }

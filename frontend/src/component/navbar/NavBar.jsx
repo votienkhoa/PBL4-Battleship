@@ -1,11 +1,16 @@
-// src/components/Navbar.js
 import NavButton from "./NavButton.jsx";
 import {NavLink} from "react-router-dom";
-import "./css/Navbar.css";
+import styled from "@emotion/styled";
+
+const StyledNavbar = styled.nav`
+    display: flex;
+    justify-content: center;
+    padding: 35px;
+`;
 
 function Navbar() {
     return (
-        <nav className="navbar">
+        <StyledNavbar>
             <NavLink to="/home">
                 {({isActive}) => (
                     <NavButton name="HOME" isActive={isActive}/>
@@ -26,7 +31,7 @@ function Navbar() {
                     <NavButton name="MORE" isActive={isActive}/>
                 )}
             </NavLink>
-        </nav>
+        </StyledNavbar>
     );
 }
 
